@@ -22,6 +22,7 @@ Currently there is no way to make editors support the dependency declaration fro
 
 ### Requirements:
   - working installation of `plz` (http://please.build)
+  - working Golang installation
   - properly setup `direnv` (https://direnv.net/)
   - Visual Studio Code with Golang support (https://code.visualstudio.com/) + (https://github.com/Microsoft/vscode-go)
   - direnv provides the right ENV variables in shell, editors are started from via terminal integration, eg: `code` for Visual Studio Code.
