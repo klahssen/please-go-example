@@ -5,7 +5,7 @@ This repo is an PoC project structure with [Please.build](http://please.build) f
 
 ### Outline:
 
-  - `third_party/go` - vendor packages, will be available to our application code durings builds / tests.
+  - `third_party/go` - vendor packages, will be available to our application code during builds / tests.
   - `tests/` - folder for integration tests
   - `proto/` - protobuff IDL, we restrict code generation just to Golang
 
