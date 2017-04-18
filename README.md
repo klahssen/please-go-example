@@ -46,7 +46,7 @@ support autocomplete for our application packages
 
 Solution:
 
-This would require our packages to be in Go workspace, like $GOPATH/src. Either we would nest our golang code in a top-level `src` folder and tell `direnv` to set GOPATH to the root our our repo. `Plz` would then control `src/` folder and things should kinda work.
+This would require our packages to be in Go workspace, like $GOPATH/src. We could nest our golang code in a top-level `src` folder and tell `direnv` to set GOPATH to the root our our repo. `Plz` would then control `src/` folder and things should kinda work.
 
     $ echo .envrc
     > export GOPATH=$PWD:$PWD/src/plz-out/gen/third_party/go:$GOPATH
