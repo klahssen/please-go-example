@@ -29,6 +29,14 @@ go_get(
 )
 
 go_get(
+    name = 'protowrap',
+    get = 'github.com/square/goprotowrap/cmd/protowrap',
+    revision = '1bcf122',
+    # $(exe //third_party/go:protowrap)
+    binary = True,
+)
+
+go_get(
     name = 'protobuf',
     get = 'github.com/golang/protobuf/proto',
     revision = '3852dcfda249c2097355a6aabb199a28d97b30df',
