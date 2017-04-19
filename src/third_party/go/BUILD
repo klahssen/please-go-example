@@ -55,3 +55,10 @@ go_get(
     get = 'github.com/jessevdk/go-flags',
     revision = '0a28dbe50f23d8fce6b016975b964cfe7b97a20a',
 )
+
+go_get(
+    name = 'stringer',
+    binary = True,
+    get = 'golang.org/x/tools/cmd/stringer',
+    revision = 'f8ecfdb6b66ec67ca930b39806519a2b72d1eaca',
+)
