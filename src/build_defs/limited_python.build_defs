@@ -1,0 +1,87 @@
+def run(name):
+    """Just run some example python code to check limitations of embedded interpeter.
+    """
+    log.info("RUN WORKS: %s", name )
+
+    i = Human(name="Ian")
+    print i.say("hi")  # prints out "Ian: hi"
+
+    j = Human("Joel")
+    print j.say("hello")  # prints out "Joel: hello"
+
+    # Call our class method
+    print i.get_species()  # => "H. sapiens"
+    print CONFIG.PROTOC_GO_PLUGIN
+    a = GolangProto()
+    a.say("some!")
+
+
+
+class ProtoLang(object):
+    def __init__(self, language, extensions, func,
+                    use_file_names = True,
+                    protoc_flags   = [],
+                    tools          = [],
+                    deps           = [],
+                    pre_build      = None):
+        self.language       = language
+        self.extensions     = extensions
+        self.func           = func
+        self.use_file_names = use_file_names
+        self.protoc_flags   = protoc_flags
+        self.tools          = tools
+        self.deps           = deps
+        self.pre_build      = pre_build
+
+
+class GolangProto(object):
+  def say(self, msg):
+      print('Hello, %s', msg)
+
+
+class Human(object):
+    # A class attribute. It is shared by all instances of this class
+    species = "H. sapiens"
+
+    # Basic initializer, this is called when this class is instantiated.
+    # Note that the double leading and trailing underscores denote objects
+    # or attributes that are used by python but that live in user-controlled
+    # namespaces. You should not invent such names on your own.
+    def __init__(self, name):
+        # Assign the argument to the instance's name attribute
+        self.name = name
+
+        # Initialize property
+        self.age = 0
+
+    # An instance method. All methods take "self" as the first argument
+    def say(self, msg):
+        return "{0}: {1}".format(self.name, msg)
+
+    # A class method is shared among all instances
+    # They are called with the calling class as the first argument
+    @classmethod
+    def get_species(cls):
+        return cls.species
+
+    # A static method is called without a class or instance reference
+    @staticmethod
+    def grunt():
+        return "*grunt*"
+
+    # A property is just like a getter.
+    # It turns the method age() into an read-only attribute
+    # of the same name.
+    @property
+    def age(self):
+        return self._age
+
+    # This allows the property to be set
+    @age.setter
+    def age(self, age):
+        self._age = age
+
+    # This allows the property to be deleted
+    @age.deleter
+    def age(self):
+        del self._age

@@ -12,3 +12,9 @@ filegroup(
     srcs = ['my_protos.build_defs'],
     visibility = ['PUBLIC'],
 )
+
+filegroup(
+    name = 'limited_python',
+    srcs = ['limited_python.build_defs'],
+    visibility = ['PUBLIC'],
+)
