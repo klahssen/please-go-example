@@ -16,6 +16,8 @@
 # )
 
 
+subinclude('//build_defs:my_protos')
+
 build_rule(
       name = 'protoc_go',
       srcs = [
