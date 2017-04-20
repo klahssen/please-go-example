@@ -55,15 +55,16 @@ def my_proto_library(name, srcs,
     log.debug('FILE_SRCS %s', file_srcs)
 
     for language, language_def in sorted(languages.items()):
+        lang_def = ProtoLang.from_dict(language_def)
         outs = []
-        if language_def['use_file_names']:
+        if lang_def.use_file_names:
             for src in file_srcs:
-                for ext in language_def['extensions']:
+                for ext in lang_def.extensions:
                     outs = [src.replace('.proto', ext)]
 
         cmd = '$TOOL1 --%s_out=$TMP_DIR %s %s' % (
-            language_def['language'],
-            ' '.join(language_def['protoc_flags']),
+            lang_def.language,
+            ' '.join(lang_def.protoc_flags),
             ' '.join(protoc_flags or [])
         )
         if root_dir:
@@ -78,13 +79,17 @@ def my_proto_library(name, srcs,
                         CONFIG.PROTO_PYTHON_PACKAGE)
         elif language == 'go':
             base_path = get_base_path()
-            labels += ['proto:go-map: %s/%s=%s/%s' % (base_path, src, base_path, name) for src in srcs
-                       if not src.startswith(':') and not src.startswith('/')]
+            labels += [
+                'proto:go-map: %s/%s=%s/%s' % (base_path, src, base_path, name)
+                for src in srcs
+                if not src.startswith(':') and not src.startswith('/')
+            ]
 
         post_build = None
-        if need_post_build or not language_def['use_file_names']:
-            cmds.append('find . %s | sort' % ' -or '.join('-name "*%s"' % ext for ext in language_def['extensions']))
-            post_build = _annotate_outs(language_def['extensions'])
+
+        if need_post_build or not lang_def.use_file_names:
+            cmds.append('find . %s | sort' % ' -or '.join('-name "*%s"' % ext for ext in lang_def.extensions))
+            post_build = _annotate_outs(lang_def.extensions)
 
         protoc_rule = build_rule(
             name                  = name,
@@ -93,18 +98,18 @@ def my_proto_library(name, srcs,
             outs                  = outs,
             cmd                   = ' && '.join(cmds),
             deps                  = deps,
-            tools                 = [CONFIG.PROTOC_TOOL] + language_def['tools'],
+            tools                 = [CONFIG.PROTOC_TOOL] + lang_def.tools,
             requires              = ['proto'],
-            pre_build             = language_def['pre_build'],
+            pre_build             = lang_def.pre_build,
             post_build            = post_build,
             labels                = labels,
             needs_transitive_deps = True,
             test_only             = test_only,
-            visibility            =  visibility,
+            visibility            = visibility,
         )
 
         lang_name = '_%s#%s' % (name, language)
-        provides[language] = language_def['func'](
+        provides[language] = lang_def.func(
             name      = lang_name,
             srcs      = [protoc_rule],
             deps      = deps + language_def['deps'],
@@ -226,7 +231,11 @@ def _merge_dicts(a, b):
         return {x: b[x] for x in a}  # Languages can be passed as just a list.
     if 'cc' in a and 'cc_hdrs' not in a:
         a['cc_hdrs'] = None
-    return {k: v or b[k] for k, v in a.items()}
+
+    return {
+        k: v or b[k]
+        for k, v in a.items()
+    }
 
 
 def proto_languages():
@@ -431,29 +440,32 @@ def root_folder():
     return cwd
 
 
-class Compiler():
-    def collectSource(self):
-        pass
-    def compileToObject(self):
-        pass
-    def run(self):
-        pass
-    def compileAndRun(self):
-        self.collectSource()
-        self.compileToObject()
-        self.run()
+class ProtoLang(object):
+    def __init__(self, language, extensions, func,
+                    use_file_names = True,
+                    protoc_flags   = [],
+                    tools          = [],
+                    deps           = [],
+                    pre_build      = None):
+        self.language       = language
+        self.extensions     = extensions
+        self.func           = func
+        self.use_file_names = use_file_names
+        self.protoc_flags   = protoc_flags
+        self.tools          = tools
+        self.deps           = deps
+        self.pre_build      = pre_build
 
-class iOSCompiler(Compiler):
-    def collectSource(self):
-        self.prints("Collecting Swift Source Code")
-    def compileToObject(self):
-        self.prints("Compiling Swift code to LLVM bitcode")
-    def run(self):
-        self.prints("Program runing on runtime environment")
+    @classmethod
+    def from_dict(cls, proto_dict):
+        return ProtoLang(
+            language       = proto_dict['language'],
+            extensions     = proto_dict['extensions'],
+            func           = proto_dict['func'],
+            use_file_names = proto_dict['use_file_names'],
+            protoc_flags   = proto_dict['protoc_flags'],
+            tools          = proto_dict['tools'],
+            deps           = proto_dict['deps'],
+            pre_build      = proto_dict['pre_build']
+        )
 
-    def prints(self, a):
-        log.debug(a)
-
-
-iOS = iOSCompiler()
-iOS.compileAndRun()
