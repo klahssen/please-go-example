@@ -26,5 +26,6 @@ func main() {
 		log.Fatalf("Unknown breedd: %s", breed)
 	}
 	kitten := kittenlib.GetKitten(opts.Port, pb.Breed(breed))
+
 	fmt.Printf("Received a kitten:\n%s\n", kitten)
 }
