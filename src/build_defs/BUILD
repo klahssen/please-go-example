@@ -6,3 +6,9 @@ filegroup(
     srcs = ['integration_test.build_defs'],
     visibility = ['PUBLIC'],
 )
+
+filegroup(
+    name = 'my_protos',
+    srcs = ['my_protos.build_defs'],
+    visibility = ['PUBLIC'],
+)
