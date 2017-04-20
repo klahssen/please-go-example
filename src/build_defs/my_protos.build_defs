@@ -29,7 +29,7 @@ def my_proto_library(name, srcs,
     """Compile a .proto file to generated code for various languages.
 
     Args:
-      name (str): Name of the rule
+      name (str):  Name of the rule
       srcs (list): Input .proto files.
       deps (list): Dependencies
       visibility (list): Visibility specification for the rule.
@@ -62,6 +62,9 @@ def my_proto_library(name, srcs,
                 for ext in lang_def.extensions:
                     outs = [src.replace('.proto', ext)]
 
+
+        log.debug('OUTS %s', outs)
+
         cmd = '$TOOL1 --%s_out=$TMP_DIR %s %s' % (
             lang_def.language,
             ' '.join(lang_def.protoc_flags),
@@ -71,7 +74,17 @@ def my_proto_library(name, srcs,
             cmd = 'export RD="%s"; cd $RD; %s ${SRCS//$RD\\//} && cd $TMP_DIR' % (root_dir, cmd.replace('$TMP_DIR', '.'))
         else:
             cmd += ' ${SRCS}'
-        cmds = [cmd, 'mv -f ${PKG}/* .']
+
+        res_folder = root_folder() + '/' + 'proto_out/' + get_base_path()
+        cmds = [cmd]
+        # this is our workaround to copy generated code to source...
+        # cmds.append('mkdir -p %s'          % res_folder)
+        # cmds.append('cp -f -R ${PKG}/ %s'  % res_folder)
+        # cmds.append('rm -rf %s/**/*.proto' % res_folder)
+
+        # this is the original cmd
+        cmds.append('mv -f ${PKG}/* .')
+
 
         # TODO(pebers): genericise these bits?
         if language == 'py' and CONFIG.PROTO_PYTHON_PACKAGE:
@@ -85,8 +98,10 @@ def my_proto_library(name, srcs,
                 if not src.startswith(':') and not src.startswith('/')
             ]
 
+
         post_build = None
 
+        # for java / cpp
         if need_post_build or not lang_def.use_file_names:
             cmds.append('find . %s | sort' % ' -or '.join('-name "*%s"' % ext for ext in lang_def.extensions))
             post_build = _annotate_outs(lang_def.extensions)

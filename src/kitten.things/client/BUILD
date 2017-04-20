@@ -6,7 +6,7 @@ go_binary(
     srcs = ['client.go'],
     deps = [
         '//kitten.things/kittenlib',
-        '//proto:kitten',
+        '//proto_out/nested_proto:kitten2',
         '//third_party/go:go-flags',
     ],
     visibility = ['PUBLIC'],

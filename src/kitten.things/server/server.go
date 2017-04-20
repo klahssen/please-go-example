@@ -9,8 +9,9 @@ import (
 	"github.com/jessevdk/go-flags"
 	"google.golang.org/grpc"
 
+	pb "proto_out/nested_proto/kitten2"
+
 	"kitten.things/kittenlib"
-	pb "proto/kitten"
 )
 
 var opts struct {

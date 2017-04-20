@@ -1,22 +1,22 @@
 package kittenlib
 
 import (
+	"fmt"
 	"testing"
-  "fmt"
-  // "time"
+	// "time"
 
 	"github.com/stretchr/testify/assert"
 
-	pb "proto/kitten"
+	pb "proto_out/nested_proto/kitten2"
 )
 
 func TestProvideKitten(t *testing.T) {
 	kitten := ProvideKitten()
-  // time.Sleep(2000 * time.Millisecond)
+	// time.Sleep(2000 * time.Millisecond)
 	assert.Equal(t, pb.Breed_RUSSIAN_BLUE, kitten.Breed)
 	assert.Equal(t, "Mighty Paws", kitten.Name)
-  fmt.Println(kitten.Age)
-  if kitten.Age != 6 {
-    t.Errorf("expected %s, was %s", 6, kitten.Age)
-  }
+	fmt.Println(kitten.Age)
+	if kitten.Age != 6 {
+		t.Errorf("expected %s, was %s", 6, kitten.Age)
+	}
 }

@@ -8,7 +8,7 @@ import (
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 
-	pb "proto/kitten"
+	pb "proto_out/nested_proto/kitten2"
 )
 
 // PetShopServer is the server implementation.

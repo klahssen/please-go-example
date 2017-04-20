@@ -8,7 +8,7 @@ go_library(
     name = 'kittenlib',
     srcs = ['kitten.go'],
     deps = [
-        '//proto:kitten',
+        '//proto_out/nested_proto:kitten2',
         '//third_party/go:grpc',
     ],
     visibility = ['PUBLIC'],

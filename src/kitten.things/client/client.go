@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	pb "proto/kitten"
+	pb "proto_out/nested_proto/kitten2"
 
 	"github.com/jessevdk/go-flags"
 
