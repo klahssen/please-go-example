@@ -55,7 +55,12 @@ def my_proto_library(name, srcs,
     log.debug('FILE_SRCS %s', file_srcs)
 
     for language, plugin in sorted(languages.items()):
-        outs = [src.replace('.proto', ext) for src in file_srcs for ext in plugin['extensions']] if plugin['use_file_names'] else []
+        outs = []
+        if plugin['use_file_names']:
+            for src in file_srcs:
+                for ext in plugin['extensions']:
+                    outs = [src.replace('.proto', ext)]
+
         cmd = '$TOOL1 --%s_out=$TMP_DIR %s %s' % (
             plugin['language'],
             ' '.join(plugin['protoc_flags']),
