@@ -4,16 +4,13 @@
 subinclude('//build_defs:my_protos')
 
 my_grpc_library(
-    name = 'kitten2',
-    srcs = ['kitten2.proto'],
+    name       = 'kitten2',
+    srcs       = ['kitten2.proto'],
     visibility = ['PUBLIC'],
     languages = [
         'go',
     ],
 )
-
-
-
 
 # build_rule(
 #       name = 'protoc_go_debug',
