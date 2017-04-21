@@ -7,7 +7,7 @@
 # See https://developers.google.com/protocol-buffers and http://grpc.io for
 # general information about gRPC and protobufs.
 grpc_library(
-    name = 'kitten',
+    name = 'sss.kitten.sdads',
     srcs = ['kitten.proto'],
     visibility = ['PUBLIC'],
     languages = [

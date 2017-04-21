@@ -35,7 +35,7 @@ class Copier
     File.join(
       ROOT_DIR,
       "src",
-      "plz-out/gen/proto"
+      "plz-out/gen/protosrc"
     )
   end
 

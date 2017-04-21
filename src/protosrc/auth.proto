@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+service Auth {
+  rpc Login(LoginRequest) returns (LoginResponse);
+}
+
+message User {
+  string name = 1;
+  string email = 2;
+}
+
+message LoginRequest {
+  string name = 1;
+}
+
+message LoginResponse {
+  User user = 1;
+}
