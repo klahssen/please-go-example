@@ -9,3 +9,12 @@ go_binary(
     ],
     visibility = ['PUBLIC'],
 )
+
+go_test(
+    name = 'supervisor_test',
+    srcs = ['main_test.go'],
+    deps = [
+        ':go.supervisor',
+        '//third_party/go:testify',
+    ],
+)
