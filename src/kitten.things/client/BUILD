@@ -11,3 +11,17 @@ go_binary(
     ],
     visibility = ['PUBLIC'],
 )
+
+
+
+
+# A go_test is similar to a go_binary in that it builds a self-contained
+# executable, but it's typically run through 'plz test' to run all its
+# tests and report their results.
+go_test(
+    name = 'sleepy_test',
+    srcs = ['sleepy_test.go'],
+    deps = [
+        '//third_party/go:testify',
+    ],
+)
